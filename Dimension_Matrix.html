@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IES Dimension Mapping Matrix</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f5f4f0;--bg3:#edecea;
+  --tx:#1a1a18;--tx2:#5a5a56;--tx3:#9a9a94;
+  --bd:rgba(0,0,0,.10);--bd2:rgba(0,0,0,.18);
+  --rm:8px;--rl:12px;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1e1e1c;--bg2:#2a2a28;--bg3:#323230;
+  --tx:#e8e6e0;--tx2:#a0a09a;--tx3:#686862;
+  --bd:rgba(255,255,255,.09);--bd2:rgba(255,255,255,.15);
+}}
+body{font-family:var(--font);background:var(--bg3);color:var(--tx);min-height:100vh;padding:20px 14px}
+.page-hdr{max-width:1100px;margin:0 auto 14px}
+.page-hdr h1{font-size:19px;font-weight:600;margin-bottom:3px;letter-spacing:-.3px}
+.page-hdr p{font-size:12px;color:var(--tx2);line-height:1.5;margin-bottom:3px}
+.card{max-width:1100px;margin:0 auto;background:var(--bg);border-radius:var(--rl);border:.5px solid var(--bd);padding:16px}
+
+/* dept callout box */
+.dept-callout{background:#EEEDFE;border:.5px solid #534AB7;border-radius:var(--rl);padding:12px 16px;margin-bottom:14px}
+.dept-callout h3{font-size:13px;font-weight:600;color:#3C3489;margin-bottom:6px}
+.dept-callout p{font-size:11px;color:#534AB7;line-height:1.6;margin-bottom:4px}
+.dept-callout p:last-child{margin-bottom:0}
+@media(prefers-color-scheme:dark){
+  .dept-callout{background:#26215C;border-color:#7F77DD}
+  .dept-callout h3{color:#CECBF6}
+  .dept-callout p{color:#AFA9EC}
+}
+
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center}
+.controls select,.controls input{font-family:var(--font);font-size:12px;padding:5px 9px;border:.5px solid var(--bd2);border-radius:var(--rm);background:var(--bg);color:var(--tx);height:30px;outline:none}
+.controls select{cursor:pointer;min-width:160px}
+.controls input{flex:1;min-width:150px}
+.controls select:focus,.controls input:focus{border-color:#534AB7}
+
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;font-size:11px;align-items:center;color:var(--tx2)}
+.leg-item{display:flex;align-items:center;gap:4px}
+.chip-demo{font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}
+
+.tabs{display:flex;gap:0;margin-bottom:10px;border-bottom:.5px solid var(--bd)}
+.tab-btn{font-family:var(--font);font-size:13px;font-weight:500;padding:8px 18px;cursor:pointer;border:none;background:none;color:var(--tx2);border-bottom:2.5px solid transparent;transition:all .15s;margin-bottom:-1px}
+.tab-bs{color:#042C53;border-bottom-color:#185FA5}
+.tab-pl{color:#04342C;border-bottom-color:#1D9E75}
+@media(prefers-color-scheme:dark){.tab-bs{color:#B5D4F4}.tab-pl{color:#9FE1CB}}
+
+.section-block{margin-bottom:4px;border:.5px solid var(--bd);border-radius:var(--rl);overflow:hidden}
+.section-hdr{padding:8px 12px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--bg2);user-select:none;transition:background .12s}
+.section-hdr:hover{background:var(--bg3)}
+.section-content{display:none;background:var(--bg);overflow-x:auto}
+.section-content.open{display:block}
+
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead th{padding:5px 8px;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tx3);background:var(--bg2);border-bottom:.5px solid var(--bd2);text-align:center;white-space:nowrap;position:sticky;top:0}
+thead th:first-child,thead th:nth-child(2){text-align:left}
+thead th:last-child{text-align:left;min-width:160px}
+tbody tr{border-bottom:.5px solid var(--bd)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover td{background:var(--bg2)}
+tbody td{padding:5px 8px;vertical-align:middle;text-align:center}
+tbody td:first-child{font-weight:500;color:#185FA5;text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:11px}
+tbody td:nth-child(2){text-align:left;font-weight:500;color:var(--tx);font-size:11px}
+tbody td:last-child{text-align:left;font-size:10px;color:var(--tx3);font-style:italic;min-width:160px}
+
+.ent-badge{font-size:9px;font-weight:500;padding:1px 5px;border-radius:2px;display:inline-block}
+.ent-ars{background:#FFF9E6;color:#7F4D00}
+.ent-vt{background:#F3EDFC;color:#534AB7}
+.ent-both{background:#E6F1FB;color:#185FA5}
+@media(prefers-color-scheme:dark){
+  .ent-ars{background:#412402;color:#FAC775}
+  .ent-vt{background:#26215C;color:#CECBF6}
+  .ent-both{background:#042C53;color:#85B7EB}
+}
+.chip{display:inline-block;font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px}
+.chip-r{background:#FFCCCC;color:#C00000}
+.chip-y{background:#E2EFDA;color:#375623}
+.chip-o{background:#FFF2CC;color:#7F4D00}
+.chip-h{background:#E8E8FF;color:#2F2F8F}
+.chip-v{background:#FEF9E7;color:#7D6608}
+.chip-n{color:var(--bd2)}
+@media(prefers-color-scheme:dark){
+  .chip-r{background:#501313;color:#F09595}
+  .chip-y{background:#173404;color:#C0DD97}
+  .chip-o{background:#412402;color:#FAC775}
+  .chip-h{background:#26215C;color:#CECBF6}
+  .chip-v{background:#2C2000;color:#F9CB42}
+}
+.empty{text-align:center;padding:32px;color:var(--tx3);font-size:13px}
+</style>
+</head>
+<body>
+<div class="page-hdr">
+  <h1>IES Dimension Mapping Matrix</h1>
+  <p>All 152 IES accounts mapped to 7 reporting dimensions. Balance Sheet / Income Statement tabs. Filter by entity or department.</p>
+</div>
+<div class="card">
+
+  <div class="dept-callout">
+    <h3>Why Department (D3) is required on virtually every income and expense entry</h3>
+    <p>The department dimension is what enables <strong>departmental P&amp;L reporting</strong> in IES — the financial reports that show each cost center's revenue, expenses, and profit contribution separately. Without it, every transaction from every team posts to a single undifferentiated pool, and the system cannot produce reports by department.</p>
+    <p>In practice this means: department managers can receive their own monthly P&amp;L, budgets can be set and tracked at the department level, variances (actual vs. budget) can be investigated by team rather than needing manual breakdowns, and the CEO can see at a glance which departments are performing vs. over/under budget. This is the same reporting layer that QuickBooks provided through its Class feature — IES provides it through dimensions instead.</p>
+    <p>For payroll entries (6100–6150), the department tag will come automatically from the payroll system import, so staff do not need to enter it manually. For all other P&amp;L transactions, it is a required field at entry.</p>
+  </div>
+
+  <div class="controls">
+    <select id="secF" onchange="render()"><option value="">All sections</option></select>
+    <select id="entF" onchange="render()">
+      <option value="">All entities</option>
+      <option value="ARS">ARS only</option>
+      <option value="VT">VT only</option>
+      <option value="Both">Both entities</option>
+    </select>
+    <select id="deptF" onchange="render()">
+      <option value="">All departments</option>
+      <option>FLIGHT-OPS</option><option>AC-MAINT</option><option>STATION</option>
+      <option>CANOPY</option><option>SANCTUARY</option><option>KARTS</option>
+      <option>RETAIL</option><option>FOOD-BEV</option><option>TRANSPORT</option>
+      <option>PROP-MGMT</option><option>ADMIN</option><option>SALES-MKTG</option>
+    </select>
+    <input id="srch" type="text" placeholder="Search account name or number…" oninput="render()">
+  </div>
+
+  <div class="legend">
+    <span style="font-weight:600;margin-right:2px">Dimension markers:</span>
+    <div class="leg-item"><span class="chip chip-demo chip-r">R</span>&nbsp;Required — must tag at entry</div>
+    <div class="leg-item"><span class="chip chip-demo chip-y">✓</span>&nbsp;Recommended</div>
+    <div class="leg-item"><span class="chip chip-demo chip-o">—</span>&nbsp;Optional — add later</div>
+    <div class="leg-item"><span class="chip chip-demo chip-v">V</span>&nbsp;Varies by transaction</div>
+    <div class="leg-item"><span class="chip chip-demo chip-h">HIST</span>&nbsp;Historical only</div>
+    <div style="margin-left:8px;display:flex;gap:6px">
+      <span class="ent-badge ent-ars">ARS</span>
+      <span class="ent-badge ent-vt">VT</span>
+      <span class="ent-badge ent-both">Both</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn tab-bs" id="tab-bs" onclick="setTab('bs')">Balance Sheet</button>
+    <button class="tab-btn" id="tab-pl" onclick="setTab('pl')">Income Statement (P&amp;L)</button>
+  </div>
+  <div id="container"></div>
+</div>
+
+<script>
+const DATA=[{"no": "1010", "name": "Wells Fargo Operating", "type": "Bank", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Bank"}, {"no": "1020", "name": "First Bank Operating", "type": "Bank", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Bank"}, {"no": "1030", "name": "Cash On Hand / ATM Settlement", "type": "Bank", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "ARS: HC vs Karts. VT: station till by community", "section": "Bank"}, {"no": "1040", "name": "ATM Surcharge", "type": "Bank", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Bank"}, {"no": "1050", "name": "Clearing Bank", "type": "Bank", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Bank"}, {"no": "1060", "name": "Cash On Hand", "type": "Bank", "stmt": "BS", "entity": "ARS", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Worksite: HC vs Karts", "section": "Bank"}, {"no": "1100", "name": "Undeposited Funds", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1110", "name": "Corridor Clearing Account", "type": "OCA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1200", "name": "Accounts Receivable", "type": "AR", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Accounts Receivable"}, {"no": "1210", "name": "Employee Receivable", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1220", "name": "Loans Receivable", "type": "OCA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Entity = counterparty", "section": "Other Current Assets"}, {"no": "1230", "name": "Other Receivables", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1240", "name": "Escrow & Security Deposits", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Location optional", "section": "Other Current Assets"}, {"no": "1250", "name": "Due from Affiliates", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "D7 = specific affiliate entity", "section": "Other Current Assets"}, {"no": "1260", "name": "Prepaid Insurance", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1280", "name": "Other Prepaid Expenses", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1300", "name": "Retail Merchandise Inventory", "type": "OCA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Location: HC vs Karts (ARS). VT: KTN default", "section": "Other Current Assets"}, {"no": "1310", "name": "Fuel Inventory", "type": "OCA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Other Current Assets"}, {"no": "1320", "name": "Coffee Stand Inventory", "type": "OCA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1330", "name": "Inventory Freight", "type": "OCA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Assets"}, {"no": "1330", "name": "Aircraft Parts Inventory", "type": "OCA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Other Current Assets"}, {"no": "1500", "name": "Land", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Entity: ARSI owns ARS land", "section": "Fixed Assets"}, {"no": "1520", "name": "Land Improvements", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Location + Entity (ARSI/HP ownership)", "section": "Fixed Assets"}, {"no": "1540", "name": "Buildings", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Location + Entity (ARSI ownership)", "section": "Fixed Assets"}, {"no": "1560", "name": "Building Improvements", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Location + Entity ownership", "section": "Fixed Assets"}, {"no": "1580", "name": "Vehicles", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Location/worksite", "section": "Fixed Assets"}, {"no": "1600", "name": "Tour Infrastructure", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Location + Entity (ARSI ownership)", "section": "Fixed Assets"}, {"no": "1610", "name": "Aircraft & Flight Equipment", "type": "FA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Fixed Assets"}, {"no": "1620", "name": "Machinery & Equipment", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Location; VT: Beaver/Otter optional", "section": "Fixed Assets"}, {"no": "1640", "name": "Computer & Office Equipment", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Location: HC vs Karts", "section": "Fixed Assets"}, {"no": "1660", "name": "Furniture & Fixtures", "type": "FA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Fixed Assets"}, {"no": "1680", "name": "Construction in Progress", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Location + Entity ownership", "section": "Fixed Assets"}, {"no": "1700", "name": "Website & Software", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Fixed Assets"}, {"no": "1710", "name": "Leasehold Improvements", "type": "FA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Fixed Assets"}, {"no": "1720", "name": "Intangible Assets", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Fixed Assets"}, {"no": "1740", "name": "Goodwill", "type": "FA", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Fixed Assets"}, {"no": "1780", "name": "Accumulated Depreciation", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "VT: Beaver/Otter optional", "section": "Fixed Assets"}, {"no": "1790", "name": "Accumulated Amortization", "type": "FA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Fixed Assets"}, {"no": "1800", "name": "Right-of-Use Asset", "type": "OA", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Location; VT: aircraft type optional", "section": "Other Assets"}, {"no": "1820", "name": "Investments & LT Deposits", "type": "OA", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "\u2713", "d8": "", "notes": "Entity = investee", "section": "Other Assets"}, {"no": "1840", "name": "Leased Aircraft Maint Reserve Liability", "type": "OA", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Other Assets"}, {"no": "2000", "name": "Accounts Payable", "type": "AP", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Accounts Payable"}, {"no": "2010", "name": "BOA Credit Card Payable", "type": "CC", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Credit Cards"}, {"no": "2020", "name": "WF Credit Card Payable", "type": "CC", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Credit Cards"}, {"no": "2100", "name": "Wages Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2110", "name": "Payroll Taxes Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2120", "name": "Health Insurance Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2130", "name": "Supplemental Benefits Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2140", "name": "Retirement Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2150", "name": "Insurance Payable", "type": "OCL", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2160", "name": "Direct Deposit Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2170", "name": "Housing Deposits Payable", "type": "OCL", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2180", "name": "Garnishment Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2190", "name": "Tips Payable", "type": "OCL", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2200", "name": "Deferred Revenue", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "\u2713", "d2": "\u2713", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Location-served + Tour/Product type", "section": "Other Current Liabilities"}, {"no": "2210", "name": "Gift Cards Outstanding", "type": "OCL", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2220", "name": "Sales Tax Payable", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Single jurisdiction", "section": "Other Current Liabilities"}, {"no": "2230", "name": "Other Current Liabilities", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2240", "name": "Corridor Core/Piece Parts Liability", "type": "OCL", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Other Current Liabilities"}, {"no": "2250", "name": "Due to Intercompany", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Entity = counterparty", "section": "Other Current Liabilities"}, {"no": "2260", "name": "Due to Alaska Cruises Inc", "type": "OCL", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2400", "name": "Line of Credit", "type": "OCL", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Other Current Liabilities"}, {"no": "2410", "name": "Related Party Loans", "type": "OCL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Entity = lender", "section": "Other Current Liabilities"}, {"no": "2440", "name": "Lease Return Condition Accrual", "type": "OCL", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Beaver vs Otter", "section": "Other Current Liabilities"}, {"no": "2620", "name": "Notes Payable", "type": "LTL", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "VT: Beaver/Otter optional", "section": "Long-Term Liabilities"}, {"no": "2640", "name": "Lease Liability", "type": "LTL", "stmt": "BS", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Location; VT: aircraft type optional", "section": "Long-Term Liabilities"}, {"no": "3000", "name": "Capital Stock", "type": "EQ", "stmt": "BS", "entity": "ARS", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Equity"}, {"no": "3010", "name": "Contributions & Distributions", "type": "EQ", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Equity"}, {"no": "3020", "name": "Opening Balance Equity", "type": "EQ", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Equity"}, {"no": "3030", "name": "Tax Distribution", "type": "EQ", "stmt": "BS", "entity": "VT", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Equity"}, {"no": "3040", "name": "Retained Earnings", "type": "EQ", "stmt": "BS", "entity": "Both", "d1": "", "d2": "", "d3": "", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "", "section": "Equity"}, {"no": "4010", "name": "Rainforest Canopy Tour Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "R", "d7": "", "d8": "", "notes": "Dept=CANOPY. Channel: Contract/Ind", "section": "Income"}, {"no": "4020", "name": "Rainforest Sanctuary Tour Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "R", "d7": "", "d8": "", "notes": "Dept=SANCTUARY. Channel: Contract/Ind/Discount", "section": "Income"}, {"no": "4030", "name": "Rainforest Bear Tour Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "R", "d7": "", "d8": "", "notes": "Dept=SANCTUARY. Channel: Contract/Ind/Discount", "section": "Income"}, {"no": "4040", "name": "Alpine Canopy Tour Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "HIST", "d2": "", "d3": "HIST", "d4": "", "d5": "HIST", "d7": "", "d8": "", "notes": "HIST \u2014 Juneau closed", "section": "Income"}, {"no": "4050", "name": "Karts Tour Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "R", "d7": "", "d8": "", "notes": "Dept=KARTS. Channel: Contract/Ind", "section": "Income"}, {"no": "4100", "name": "Flightseeing Misty Tour Sales", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "", "d3": "R", "d4": "\u2713", "d5": "R", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. Location + Aircraft + Channel", "section": "Income"}, {"no": "4110", "name": "Flightseeing Bear Tour Sales", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "R", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. Location + Tour type + Aircraft + Channel", "section": "Income"}, {"no": "4120", "name": "Flightseeing Packaged Tour Sales", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "R", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS", "section": "Income"}, {"no": "4130", "name": "Flightseeing Tour Sales", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "R", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. AET/BPT/GFT", "section": "Income"}, {"no": "4140", "name": "Essential Air Service Mail", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required \u2014 DOT EAS reporting", "section": "Income"}, {"no": "4145", "name": "Contracted Mail", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required", "section": "Income"}, {"no": "4150", "name": "Carrier Mail", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required", "section": "Income"}, {"no": "4155", "name": "UPS", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required", "section": "Income"}, {"no": "4160", "name": "Passenger", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required \u2014 FAA reporting", "section": "Income"}, {"no": "4170", "name": "Freight", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required", "section": "Income"}, {"no": "4180", "name": "Service Fee", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location + memo for fee type", "section": "Income"}, {"no": "4190", "name": "Charter", "type": "Inc", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. Destination + Charter type + Aircraft", "section": "Income"}, {"no": "4200", "name": "Retail Sales", "type": "Inc", "stmt": "PL", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "V", "d4": "", "d5": "\u2713", "d7": "", "d8": "", "notes": "Dept=RETAIL or KARTS. Channel incl. DISCOUNT", "section": "Income"}, {"no": "4300", "name": "Coffee Stand Sales", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "\u2713", "d7": "", "d8": "", "notes": "Dept=FOOD-BEV. Channel incl. DISCOUNT", "section": "Income"}, {"no": "4400", "name": "Transportation Income", "type": "Inc", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=TRANSPORT", "section": "Income"}, {"no": "4500", "name": "Venue Income", "type": "Inc", "stmt": "PL", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT. Location + memo for venue type", "section": "Income"}, {"no": "4600", "name": "Other Income", "type": "Inc", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN. Includes fuel sales (~$200/yr)", "section": "Income"}, {"no": "5000", "name": "Flightseeing COS", "type": "COGS", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. Location + Tour type + Aircraft", "section": "Cost of Goods Sold"}, {"no": "5100", "name": "Tour COS (ARS)", "type": "COGS", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "\u2713", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=CANOPY or SANCTUARY \u2014 matches revenue dept", "section": "Cost of Goods Sold"}, {"no": "5100", "name": "Airport Landing Fees COS (VT)", "type": "COGS", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS. Location + Aircraft type", "section": "Cost of Goods Sold"}, {"no": "5160", "name": "Charter COS", "type": "COGS", "stmt": "PL", "entity": "VT", "d1": "\u2713", "d2": "\u2713", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=FLIGHT-OPS", "section": "Cost of Goods Sold"}, {"no": "5200", "name": "Retail COGS", "type": "COGS", "stmt": "PL", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=RETAIL or KARTS. Incl. fuel COGS (immaterial). POS detail.", "section": "Cost of Goods Sold"}, {"no": "5300", "name": "Coffee Stand COGS", "type": "COGS", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=FOOD-BEV", "section": "Cost of Goods Sold"}, {"no": "5400", "name": "Transportation COS", "type": "COGS", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=TRANSPORT", "section": "Cost of Goods Sold"}, {"no": "5500", "name": "Aircraft Parts COGS", "type": "COGS", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT. Beaver vs Otter", "section": "Cost of Goods Sold"}, {"no": "6000", "name": "Aircraft Operating Lease", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT. Beaver vs Otter required", "section": "Expenses"}, {"no": "6010", "name": "Aircraft Maintenance Expense", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT. Beaver vs Otter. Detail via memo.", "section": "Expenses"}, {"no": "6015", "name": "Inventory Rounding & Adjustment", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT", "section": "Expenses"}, {"no": "6020", "name": "Aircraft Fuel & Oil", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT. Beaver vs Otter. Fuel type via memo.", "section": "Expenses"}, {"no": "6030", "name": "Leased Aircraft Maint Reserve", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "\u2713", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT. Beaver vs Otter required", "section": "Expenses"}, {"no": "6100", "name": "Wages & Salaries", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "\u2014", "notes": "Dept from PR system. D8 Labor Role optional.", "section": "Expenses"}, {"no": "6105", "name": "Overtime Wages", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "\u2014", "notes": "Dept from PR system. D8 Labor Role optional.", "section": "Expenses"}, {"no": "6110", "name": "Payroll Taxes", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept from PR system", "section": "Expenses"}, {"no": "6120", "name": "Health Insurance", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept from PR system", "section": "Expenses"}, {"no": "6130", "name": "Supplemental Benefits", "type": "Exp", "stmt": "PL", "entity": "ARS", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept from PR system", "section": "Expenses"}, {"no": "6140", "name": "Retirement", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept from PR system", "section": "Expenses"}, {"no": "6150", "name": "Workers Compensation", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept from PR system", "section": "Expenses"}, {"no": "6160", "name": "Employee Housing Costs", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6170", "name": "Recruiting Training & Compliance", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6180", "name": "Employee Appreciation", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6190", "name": "Uniforms & Gear", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=team receiving uniforms", "section": "Expenses"}, {"no": "6199", "name": "Other Employee Costs", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6200", "name": "Grounds & Facility Expenses", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "R", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT. Location optional.", "section": "Expenses"}, {"no": "6210", "name": "Office & General Supplies", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=consuming team. Location optional.", "section": "Expenses"}, {"no": "6220", "name": "Equipment & Tool Expenses", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=consuming team.", "section": "Expenses"}, {"no": "6230", "name": "Vehicle Expenses", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "ARS: TRANSPORT. VT: ground\u2192STATION, fuel\u2192AC-MAINT.", "section": "Expenses"}, {"no": "6240", "name": "IT Hardware & Peripherals", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6250", "name": "Software Subscriptions", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6300", "name": "Rent Expense", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "R", "d2": "", "d3": "R", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT. Location required \u2014 each lease one facility.", "section": "Expenses"}, {"no": "6350", "name": "Municipal Utilities", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT. Location required.", "section": "Expenses"}, {"no": "6360", "name": "Telecom", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6370", "name": "Heating Fuel", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT. Location required.", "section": "Expenses"}, {"no": "6500", "name": "Insurance", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN. D7=SHARED for shared policies.", "section": "Expenses"}, {"no": "6520", "name": "Property Tax", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT", "section": "Expenses"}, {"no": "6700", "name": "Travel", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=traveling team", "section": "Expenses"}, {"no": "6710", "name": "Meals & Entertainment", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN/SALES-MKTG. Meals vs Entertain. separation via memo.", "section": "Expenses"}, {"no": "6750", "name": "Postage & Delivery", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6800", "name": "Marketing & Public Relations", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "\u2713", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=SALES-MKTG. Tour/product optional.", "section": "Expenses"}, {"no": "6900", "name": "Legal & Professional Services", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6910", "name": "Dues & Memberships", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6920", "name": "Licenses Permits & Fees", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2014", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "FAA\u2192AC-MAINT, tour permits\u2192CANOPY/SANCTUARY, licenses\u2192ADMIN", "section": "Expenses"}, {"no": "6930", "name": "Ferry Transport", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "R", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=STATION. Location required.", "section": "Expenses"}, {"no": "6950", "name": "Account Service Fees", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6960", "name": "Bad Debt Expense", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6970", "name": "Cash Over / Short", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "\u2713", "d2": "", "d3": "V", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=team at the till. Location: which station/site.", "section": "Expenses"}, {"no": "6975", "name": "Intercompany Billing", "type": "Exp", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "Dept=ADMIN. Entity = which entity billed.", "section": "Expenses"}, {"no": "6980", "name": "Miscellaneous Expense", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Expenses"}, {"no": "6990", "name": "Shared Services", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "R", "d8": "", "notes": "RETIRE at go-live. Book to real GL + D7=SHARED instead.", "section": "Expenses"}, {"no": "7000", "name": "Interest Income", "type": "OI", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Other Income"}, {"no": "7010", "name": "Gain / Loss on Asset Disposal", "type": "OI", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=PROP-MGMT (property) or AC-MAINT (aircraft)", "section": "Other Income"}, {"no": "7020", "name": "Equity in Earnings Unc Investment", "type": "OI", "stmt": "PL", "entity": "VT", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "\u2713", "d8": "", "notes": "Dept=ADMIN. Entity=ACI", "section": "Other Income"}, {"no": "8000", "name": "Interest Expense", "type": "OE", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN or AC-MAINT (aircraft financing)", "section": "Other Expense"}, {"no": "8010", "name": "Depreciation Expense", "type": "OE", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "V", "d4": "\u2014", "d5": "", "d7": "", "d8": "", "notes": "Dept=AC-MAINT (aircraft) / PROP-MGMT (property) / ADMIN (other)", "section": "Other Expense"}, {"no": "8020", "name": "Amortization Expense", "type": "OE", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Dept=ADMIN", "section": "Other Expense"}, {"no": "8999", "name": "Reconciliation Discrepancies", "type": "OE", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Retire at go-live", "section": "Other Expense"}, {"no": "9999", "name": "Uncategorized Expense", "type": "Exp", "stmt": "PL", "entity": "Both", "d1": "", "d2": "", "d3": "R", "d4": "", "d5": "", "d7": "", "d8": "", "notes": "Zero at steady state", "section": "Expenses"}];
+const BS_SECS=["Bank", "Accounts Receivable", "Other Current Assets", "Fixed Assets", "Other Assets", "Accounts Payable", "Credit Cards", "Other Current Liabilities", "Long-Term Liabilities", "Equity"];
+const PL_SECS=["Income", "Cost of Goods Sold", "Expenses", "Other Income", "Other Expense"];
+let tab='bs';
+
+function chip(v){
+  if(!v)return'<span class="chip-n">·</span>';
+  if(v==='R')return'<span class="chip chip-r">R</span>';
+  if(v==='✓')return'<span class="chip chip-y">✓</span>';
+  if(v==='—')return'<span class="chip chip-o">—</span>';
+  if(v==='HIST')return'<span class="chip chip-h">HIST</span>';
+  if(v==='V')return'<span class="chip chip-v">V</span>';
+  return`<span class="chip">${v}</span>`;
+}
+
+function entBadge(e){
+  if(e==='ARS')return'<span class="ent-badge ent-ars">ARS</span>';
+  if(e==='VT')return'<span class="ent-badge ent-vt">VT</span>';
+  return'<span class="ent-badge ent-both">Both</span>';
+}
+
+function setTab(t){
+  tab=t;
+  document.getElementById('tab-bs').className='tab-btn'+(t==='bs'?' tab-bs':'');
+  document.getElementById('tab-pl').className='tab-btn'+(t==='pl'?' tab-pl':'');
+  rebuildSec();render();
+}
+
+function rebuildSec(){
+  const secs=tab==='bs'?BS_SECS:PL_SECS;
+  const sel=document.getElementById('secF');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">All sections</option>';
+  secs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;if(s===cur)o.selected=true;sel.appendChild(o);});
+}
+
+function render(){
+  const sf=document.getElementById('secF').value;
+  const ef=document.getElementById('entF').value;
+  const df=document.getElementById('deptF').value;
+  const q=(document.getElementById('srch').value||'').toLowerCase().trim();
+  const order=tab==='bs'?BS_SECS:PL_SECS;
+  const cont=document.getElementById('container');
+  cont.innerHTML='';
+  let any=false;
+
+  order.forEach(sec=>{
+    if(sf&&sf!==sec)return;
+    const rows=DATA.filter(r=>{
+      if(r.section!==sec)return false;
+      if(ef&&r.entity!==ef)return false;
+      if(df&&!r.d3.includes(df))return false;
+      if(q&&!r.no.includes(q)&&!r.name.toLowerCase().includes(q))return false;
+      return true;
+    });
+    if(!rows.length)return;
+    any=true;
+
+    const blk=document.createElement('div');blk.className='section-block';
+    const hdr=document.createElement('div');hdr.className='section-hdr';
+    hdr.innerHTML=`<span>${sec}</span><span style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--tx3)">${rows.length} accounts</span><span>▸</span></span>`;
+    const cnt=document.createElement('div');cnt.className='section-content';
+
+    const tbl=document.createElement('table');
+    tbl.innerHTML=`<thead><tr>
+      <th style="text-align:left">Acct #</th>
+      <th style="text-align:left">Account name</th>
+      <th>Entity</th>
+      <th title="Location / Worksite">D1 Location</th>
+      <th title="Tour / Product Line">D2 Tour</th>
+      <th title="Department / Cost Center — required on all P&L accounts">D3 Dept</th>
+      <th title="Aircraft Type: Beaver or Otter — VT only">D4 Aircraft</th>
+      <th title="Sales Channel: Contract / Independent / Cancellation / Discount">D5 Channel</th>
+      <th title="Entity / Intercompany — for cross-charges and shared costs (D7=SHARED for 60/40 pool)">D7 Entity</th>
+      <th title="Labor Role — optional, 6100/6105 only">D8 Role</th>
+      <th style="text-align:left">Notes</th>
+    </tr></thead>`;
+    const tbody=document.createElement('tbody');
+    rows.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${r.no}</td><td>${r.name}</td><td>${entBadge(r.entity)}</td>`+
+        `<td>${chip(r.d1)}</td><td>${chip(r.d2)}</td><td>${chip(r.d3)}</td>`+
+        `<td>${chip(r.d4)}</td><td>${chip(r.d5)}</td><td>${chip(r.d7)}</td><td>${chip(r.d8)}</td>`+
+        `<td>${r.notes}</td>`;
+      tbody.appendChild(tr);
+    });
+    tbl.appendChild(tbody);
+    cnt.appendChild(tbl);
+
+    hdr.addEventListener('click',()=>{
+      cnt.classList.toggle('open');
+      hdr.querySelector('span:last-child span:last-child').textContent=cnt.classList.contains('open')?'▾':'▸';
+    });
+    blk.appendChild(hdr);blk.appendChild(cnt);cont.appendChild(blk);
+  });
+
+  if(!any)cont.innerHTML='<div class="empty">No accounts match the current filters.</div>';
+}
+
+rebuildSec();render();
+setTimeout(()=>{const f=document.querySelector('.section-content');if(f){f.classList.add('open');const a=f.previousElementSibling.querySelector('span:last-child span:last-child');if(a)a.textContent='▾';}},50);
+</script>
+</body>
+</html>
